@@ -4,6 +4,7 @@ import clsx from "clsx";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import type { PanInfo } from "framer-motion";
 import Image from "next/image";
+import type { StaticImageData } from "next/image";
 import type { FocusEvent } from "react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useMediaQuery } from "usehooks-ts";
@@ -13,7 +14,7 @@ import { altFor, pickGallery, resolveStatic } from "@/lib/media";
 type GalleryImage = {
   id: string;
   alt: string;
-  src: ReturnType<typeof resolveStatic>;
+  src: StaticImageData;
 };
 
 const GAP_DESKTOP = 28;
@@ -61,7 +62,7 @@ export default function ImageGallery() {
         alt: altFor(src),
         src: resolveStatic(src),
       }))
-      .filter((item): item is GalleryImage => Boolean(item.src));
+      .filter((item): item is GalleryImage => item.src != null) as GalleryImage[];
   }, [sources]);
 
   const prefersReducedMotion = useReducedMotion();

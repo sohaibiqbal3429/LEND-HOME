@@ -23,8 +23,7 @@
       "node",
       "@types/react",
       "@types/react-dom",
-      "@types/node",
-      "types/next-auth"
+      "@types/node"
     ],
     "baseUrl": ".",
     "paths": {
@@ -42,6 +41,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
+    "**/*.d.ts",
     "**/*.cjs",
     "**/*.mjs",
     "**/*.mdx",
