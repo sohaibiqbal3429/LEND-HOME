@@ -1,6 +1,7 @@
 "use client";
 
 import { MouseEvent, useEffect, useState } from "react";
+import { cn } from "@/lib/utils";
 
 type Item = { id: string; label: string };
 
@@ -20,7 +21,7 @@ export default function QuickNav({ items }: { items: Item[] }) {
     return () => obs.disconnect();
   }, [items]);
 
-  const go = (id: string) => (event: MouseEvent) => {
+  const go = (id: string) => (event: MouseEvent<HTMLAnchorElement>) => {
     event.preventDefault();
     const el = document.getElementById(id);
     if (!el) return;
@@ -31,44 +32,30 @@ export default function QuickNav({ items }: { items: Item[] }) {
   return (
     <nav
       aria-label="Quick navigation"
-      className="hidden xl:block"
-      style={{
-        position: "fixed",
-        right: 12,
-        top: "30%",
-        zIndex: 50,
-        background: "rgba(255,255,255,.7)",
-        backdropFilter: "blur(8px)",
-        borderRadius: 12,
-        border: "1px solid rgba(0,0,0,.08)",
-        padding: 8,
-      }}
+      className="fixed right-6 top-[30%] z-50 hidden w-52 rounded-3xl border border-white/60 bg-white/80 p-3 shadow-soft backdrop-blur-xl xl:block"
     >
-      <ul style={{ listStyle: "none", margin: 0, padding: 0 }}>
-        {items.map((item) => (
-          <li key={item.id}>
-            <a
-              href={`#${item.id}`}
-              onClick={go(item.id)}
-              onFocus={() => setActive(item.id)}
-              onMouseEnter={() => setActive(item.id)}
-              style={{
-                display: "block",
-                padding: "8px 10px",
-                borderRadius: 8,
-                textDecoration: "none",
-                fontSize: 13,
-                color: active === item.id ? "#111827" : "#374151",
-                background:
-                  active === item.id ? "rgba(167,243,208,.7)" : "transparent",
-                outline: "2px solid transparent",
-                outlineOffset: 2,
-              }}
-            >
-              {item.label}
-            </a>
-          </li>
-        ))}
+      <ul className="space-y-1">
+        {items.map((item) => {
+          const isActive = active === item.id;
+          return (
+            <li key={item.id}>
+              <a
+                href={`#${item.id}`}
+                onClick={go(item.id)}
+                onFocus={() => setActive(item.id)}
+                onMouseEnter={() => setActive(item.id)}
+                className={cn(
+                  "block rounded-2xl px-3 py-2 text-sm font-medium text-slate-600 transition-colors duration-200",
+                  isActive
+                    ? "bg-emerald-100/70 text-charcoal shadow focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400"
+                    : "hover:bg-emerald-50/80 hover:text-charcoal focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-300"
+                )}
+              >
+                {item.label}
+              </a>
+            </li>
+          );
+        })}
       </ul>
     </nav>
   );

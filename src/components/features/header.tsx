@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -46,12 +45,14 @@ export function Header() {
           </button>
         </div>
       </div>
-      <motion.nav
-        initial={false}
-        animate={{ height: open ? "auto" : 0, opacity: open ? 1 : 0 }}
-        transition={{ type: "spring", stiffness: 260, damping: 24 }}
-        className={cn("overflow-hidden border-b border-white/20 bg-white/90 lg:hidden")}
+      <nav
+        aria-label="Mobile"
+        className={cn(
+          "border-b border-white/20 bg-white/90 transition-[max-height,opacity] duration-300 ease-snappy lg:hidden",
+          open ? "max-h-96 opacity-100" : "pointer-events-none max-h-0 opacity-0"
+        )}
       >
+        {/* CSS transitions replace the previous framer-motion block for a lighter mobile menu. */}
         <div className="container flex flex-col gap-4 py-4">
           {navLinks.map((link) => (
             <Link
@@ -67,7 +68,7 @@ export function Header() {
             <Link href="/apply">Get a Quote</Link>
           </Button>
         </div>
-      </motion.nav>
+      </nav>
     </header>
   );
 }

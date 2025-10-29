@@ -1,28 +1,35 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
 import Image from "next/image";
+import { useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { Phone } from "lucide-react";
 import { altFor, resolveStatic } from "@/lib/media";
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
+import { useInViewOnce } from "@/hooks/useInViewOnce";
+import { cn } from "@/lib/utils";
 
-const spring = { type: "spring", stiffness: 260, damping: 30 } as const;
 const heroMediaSrc = "/src/assets/aerial-view-of-classical-american-home-in-south-ca-2024-12-06-15-52-18-utc.jpg";
 const heroImage = resolveStatic(heroMediaSrc);
 const heroAlt = altFor(heroMediaSrc);
 
 export function Hero() {
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = usePrefersReducedMotion();
+  const { ref, isVisible } = useInViewOnce<HTMLDivElement>({ rootMargin: "-20% 0px" });
+  // Observing once keeps the entrance effect while avoiding continuous observers.
+  const containerState = useMemo(
+    () =>
+      cn(
+        "grid gap-10 px-8 py-16 transition-all duration-500 ease-snappy lg:grid-cols-2 lg:px-16",
+        !reduceMotion && !isVisible && "translate-y-10 opacity-0",
+        !reduceMotion && isVisible && "translate-y-0 opacity-100"
+      ),
+    [isVisible, reduceMotion]
+  );
 
   return (
     <section className="relative overflow-hidden rounded-[2.5rem] bg-charcoal text-mint shadow-soft">
-      <motion.div
-        initial={reduceMotion ? undefined : { opacity: 0, y: 40 }}
-        whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
-        transition={spring}
-        viewport={{ once: true, amount: 0.6 }}
-        className="grid gap-10 px-8 py-16 lg:grid-cols-2 lg:px-16"
-      >
+      <div ref={ref} className={containerState}>
         <div className="space-y-6">
           <div className="inline-flex items-center gap-3 rounded-full bg-white/10 px-4 py-2 text-sm">
             <span className="flex h-2 w-2 rounded-full bg-accent" />
@@ -71,20 +78,9 @@ export function Hero() {
         </div>
         <div className="relative">
           {!reduceMotion && (
-            <motion.div
-              className="absolute -top-10 right-0 hidden h-72 w-72 rounded-full border border-accent/40 lg:block"
-              animate={{ rotate: [0, 5, -5, 0] }}
-              transition={{ repeat: Infinity, duration: 16, ease: "easeInOut" }}
-            />
+            <div className="animate-gentle-rotate absolute -top-10 right-0 hidden h-72 w-72 rounded-full border border-accent/40 lg:block" />
           )}
-          <motion.div
-            initial={reduceMotion ? undefined : { scale: 0.95, opacity: 0 }}
-            whileInView={reduceMotion ? undefined : { scale: 1, opacity: 1 }}
-            whileHover={reduceMotion ? undefined : { y: -6 }}
-            transition={{ ...spring, duration: 0.22 }}
-            viewport={{ once: true }}
-            className="group glass relative h-full min-h-[320px] overflow-hidden rounded-[2rem]"
-          >
+          <div className="group glass hover-lift relative h-full min-h-[320px] overflow-hidden rounded-[2rem]">
             {heroImage ? (
               <Image
                 src={heroImage}
@@ -101,9 +97,9 @@ export function Hero() {
               <p className="font-semibold">Availability</p>
               <p className="text-xs text-slate-600">Mon–Sat • 8am–8pm</p>
             </div>
-          </motion.div>
+          </div>
         </div>
-      </motion.div>
+      </div>
     </section>
   );
 }

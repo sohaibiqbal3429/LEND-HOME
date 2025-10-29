@@ -83,10 +83,7 @@ export function Calculator() {
   };
 
   return (
-    <section
-      id="calculator"
-      className="rounded-[2.5rem] bg-white p-8 shadow-soft transition-transform duration-200 motion-safe:hover:-translate-y-1"
-    >
+    <section id="calculator" className="hover-lift rounded-[2.5rem] bg-white p-8 shadow-soft">
       <form className="grid gap-6 lg:grid-cols-[2fr,1fr]" onSubmit={(e) => e.preventDefault()}>
         <div className="grid gap-6">
           <h2 className="text-3xl font-display text-charcoal">Mortgage calculator</h2>
@@ -161,7 +158,7 @@ export function Calculator() {
             </div>
           </div>
         </div>
-        <aside className="glass flex flex-col gap-6 rounded-3xl p-6 transition-transform duration-200 motion-safe:hover:-translate-y-1">
+        <aside className="glass hover-lift flex flex-col gap-6 rounded-3xl p-6">
           <h3 className="text-xl font-display text-charcoal">Results</h3>
           <div className="grid gap-4 text-sm">
             <ResultRow label="Loan to value" value={`${ltv}%`} alert={ltv > 85 ? "High LTV may limit lenders" : undefined} />

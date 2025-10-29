@@ -1,15 +1,13 @@
 "use client";
 
 import clsx from "clsx";
-import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
-import type { PanInfo } from "framer-motion";
 import Image from "next/image";
 import type { StaticImageData } from "next/image";
-import type { FocusEvent } from "react";
+import type { FocusEvent, PointerEvent } from "react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { useMediaQuery } from "usehooks-ts";
 
 import { altFor, pickGallery, resolveStatic } from "@/lib/media";
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 
 type GalleryImage = {
   id: string;
@@ -20,23 +18,6 @@ type GalleryImage = {
 const GAP_DESKTOP = 28;
 const GAP_TABLET = 20;
 const GAP_MOBILE = 14;
-
-const SLIDE_VARIANTS = {
-  enter: (direction: number) => ({
-    x: direction > 0 ? "100%" : "-100%",
-    opacity: 0,
-  }),
-  center: {
-    x: 0,
-    opacity: 1,
-    transition: { duration: 0.35, ease: "easeOut" },
-  },
-  exit: (direction: number) => ({
-    x: direction > 0 ? "-100%" : "100%",
-    opacity: 0,
-    transition: { duration: 0.35, ease: "easeIn" },
-  }),
-};
 
 /** Minimal useInterval (cleans up on null delay) */
 function useInterval(callback: () => void, delay: number | null) {
@@ -52,8 +33,23 @@ function useInterval(callback: () => void, delay: number | null) {
   }, [delay]);
 }
 
+function getSlidesPerView(width: number) {
+  if (width >= 1200) return 4;
+  if (width >= 1024) return 3;
+  if (width >= 768) return 2;
+  return 1;
+}
+
+function getGap(width: number) {
+  if (width >= 1200) return GAP_DESKTOP;
+  if (width >= 1024) return 24;
+  if (width >= 768) return GAP_TABLET;
+  return GAP_MOBILE;
+}
+
 export default function ImageGallery() {
-  const sources = pickGallery() ?? [];
+  const sources = useMemo(() => pickGallery() ?? [], []);
+  const prefersReducedMotion = usePrefersReducedMotion();
 
   const images: GalleryImage[] = useMemo(() => {
     return sources
@@ -65,16 +61,19 @@ export default function ImageGallery() {
       .filter((item): item is GalleryImage => item.src != null) as GalleryImage[];
   }, [sources]);
 
-  const prefersReducedMotion = useReducedMotion();
-  const isDesktop = useMediaQuery("(min-width: 1200px)");
-  const isLargeTablet = useMediaQuery("(min-width: 1024px)");
-  const isTablet = useMediaQuery("(min-width: 768px)");
+  const [viewportWidth, setViewportWidth] = useState<number>(() => (typeof window === "undefined" ? 0 : window.innerWidth));
 
-  const slidesPerView = isDesktop ? 4 : isLargeTablet ? 3 : isTablet ? 2 : 1;
-  const sliderGap =
-    isDesktop ? GAP_DESKTOP : isLargeTablet ? 24 : isTablet ? GAP_TABLET : GAP_MOBILE;
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const update = () => setViewportWidth(window.innerWidth);
+    update();
+    window.addEventListener("resize", update, { passive: true });
+    return () => window.removeEventListener("resize", update);
+  }, []);
 
-  // Build pages by chunking and looping the last page with the first items
+  const slidesPerView = useMemo(() => getSlidesPerView(viewportWidth), [viewportWidth]);
+  const sliderGap = useMemo(() => getGap(viewportWidth), [viewportWidth]);
+
   const pages = useMemo(() => {
     if (!images.length) return [];
     const chunked: GalleryImage[][] = [];
@@ -96,45 +95,65 @@ export default function ImageGallery() {
   const pageCount = pages.length;
 
   const [activePage, setActivePage] = useState(0);
-  const [direction, setDirection] = useState(0);
   const [paused, setPaused] = useState(false);
+  const [isTransitioning, setIsTransitioning] = useState(false);
   const controlsDisabled = pageCount <= 1;
 
-  // Reset to first page when layout changes
   useEffect(() => {
     setActivePage(0);
   }, [slidesPerView, pageCount]);
 
+  useEffect(() => {
+    if (!isTransitioning) return;
+    const timer = window.setTimeout(() => setIsTransitioning(false), 420);
+    return () => window.clearTimeout(timer);
+  }, [isTransitioning]);
+
   const paginate = useCallback(
     (delta: number) => {
-      if (!pageCount) return;
-      setDirection(delta);
+      if (!pageCount || isTransitioning) return;
+      setIsTransitioning(true);
       setActivePage((prev) => (prev + delta + pageCount) % pageCount);
     },
-    [pageCount]
+    [isTransitioning, pageCount]
   );
 
-  // Autoplay
   useInterval(
     () => paginate(1),
     paused || prefersReducedMotion || pageCount <= 1 ? null : 4500
   );
 
-  const handleDragEnd = useCallback(
-    (_: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
-      if (info.offset.x < -60) paginate(1);
-      if (info.offset.x > 60) paginate(-1);
+  const dragState = useRef<{ startX: number | null }>({ startX: null });
+
+  const handlePointerDown = useCallback(
+    (event: PointerEvent<HTMLDivElement>) => {
+      if (prefersReducedMotion) return;
+      setPaused(true);
+      // Manual pointer detection replaces framer-motion drag handling to keep the bundle lean.
+      dragState.current.startX = event.clientX;
+      event.currentTarget.setPointerCapture(event.pointerId);
+    },
+    [prefersReducedMotion]
+  );
+
+  const handlePointerUp = useCallback(
+    (event: PointerEvent<HTMLDivElement>) => {
+      if (dragState.current.startX === null) return;
+      const delta = event.clientX - dragState.current.startX;
+      if (Math.abs(delta) > 60) {
+        paginate(delta < 0 ? 1 : -1);
+      }
+      dragState.current.startX = null;
+      event.currentTarget.releasePointerCapture(event.pointerId);
+      setPaused(false);
     },
     [paginate]
   );
-
-  const sliderItems = pages[activePage] ?? [];
 
   if (!images.length) return null;
 
   return (
     <div className="space-y-10">
-      {/* Carousel controls + dots */}
       <section
         aria-label="LENDLY gallery carousel"
         className="space-y-4"
@@ -181,7 +200,7 @@ export default function ImageGallery() {
                   aria-selected={isActive}
                   aria-label={`Go to slide ${index + 1}`}
                   onClick={() => {
-                    setDirection(index > activePage ? 1 : -1);
+                    setIsTransitioning(true);
                     setActivePage(index);
                   }}
                   className={clsx(
@@ -196,55 +215,47 @@ export default function ImageGallery() {
           </div>
         </div>
 
-        {/* Slider viewport */}
         <div
           className="relative overflow-hidden rounded-lg"
-          style={{ paddingBottom: 0 }}
+          onPointerDown={handlePointerDown}
+          onPointerUp={handlePointerUp}
+          onPointerCancel={handlePointerUp}
+          style={{ touchAction: "pan-y" }}
         >
-          <AnimatePresence custom={direction} mode="wait" initial={false}>
-            <motion.div
-              key={activePage}
-              custom={direction}
-              variants={SLIDE_VARIANTS}
-              initial="enter"
-              animate="center"
-              exit="exit"
-              drag="x"
-              dragConstraints={{ left: 0, right: 0 }}
-              onDragEnd={handleDragEnd}
-              className="w-full"
-            >
-              {/* Grid per page; equal tiles with fixed aspect ratio */}
-              <div
-                className={clsx(
-                  "grid",
-                  "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4"
-                )}
-                style={{
-                  gap: `${sliderGap}px`,
-                }}
-              >
-                {sliderItems.map((img) => (
-                  <figure
-                    key={img.id}
-                    className="relative overflow-hidden rounded-md border border-emerald-100 shadow-sm"
-                  >
-                    {/* Equal size frame */}
-                    <div className="relative w-full aspect-[4/3]">
-                      <Image
-                        src={img.src}
-                        alt={img.alt || "Gallery image"}
-                        fill
-                        sizes="(min-width:1280px) 25vw, (min-width:1024px) 33vw, (min-width:768px) 50vw, 100vw"
-                        className="object-cover"
-                        priority={false}
-                      />
-                    </div>
-                  </figure>
-                ))}
+          {/* Flex wrapper allows smooth translate animations without framer-motion. */}
+          <div
+            className="flex transition-transform duration-500 ease-snappy"
+            style={{ transform: `translateX(-${activePage * 100}%)` }}
+          >
+            {pages.map((page, pageIndex) => (
+              <div key={`page-${pageIndex}`} className="min-w-full shrink-0 px-1">
+                <div
+                  className={clsx(
+                    "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4",
+                    prefersReducedMotion && "transition-none"
+                  )}
+                  style={{ gap: `${sliderGap}px` }}
+                >
+                  {page.map((img) => (
+                    <figure
+                      key={img.id}
+                      className="relative overflow-hidden rounded-md border border-emerald-100 shadow-sm"
+                    >
+                      <div className="relative w-full aspect-[4/3]">
+                        <Image
+                          src={img.src}
+                          alt={img.alt || "Gallery image"}
+                          fill
+                          sizes="(min-width:1280px) 25vw, (min-width:1024px) 33vw, (min-width:768px) 50vw, 100vw"
+                          className="object-cover"
+                        />
+                      </div>
+                    </figure>
+                  ))}
+                </div>
               </div>
-            </motion.div>
-          </AnimatePresence>
+            ))}
+          </div>
         </div>
       </section>
     </div>
