@@ -1,0 +1,243 @@
+{
+  "analyzedAt": "2025-10-16T21:11:06.844Z",
+  "inputsDir": "/src/assets",
+  "images": [
+    {
+      "src": "/src/assets/a-real-estate-agent-and-client-are-discussing-prop-2025-10-08-12-40-17-utc.jpg",
+      "basename": "a-real-estate-agent-and-client-are-discussing-prop-2025-10-08-12-40-17-utc.jpg",
+      "ratioHint": "unknown",
+      "subject": "people",
+      "brightness": "medium",
+      "alt": "a real estate agent and client are discussing prop 2025 10 08 12 40 17 utc – homebuyers discussing mortgages",
+      "caption": "a real estate agent and client are discussing prop 2025 10 08 12 40 17 utc",
+      "keywords": [
+        "mortgage",
+        "lending",
+        "home",
+        "finance",
+        "people"
+      ]
+    },
+    {
+      "src": "/src/assets/aerial-view-of-classical-american-home-in-south-ca-2024-12-06-15-52-18-utc.jpg",
+      "basename": "aerial-view-of-classical-american-home-in-south-ca-2024-12-06-15-52-18-utc.jpg",
+      "ratioHint": "unknown",
+      "subject": "home-exterior",
+      "brightness": "medium",
+      "alt": "aerial view of classical american home in south ca 2024 12 06 15 52 18 utc – home exterior related to mortgages",
+      "caption": "aerial view of classical american home in south ca 2024 12 06 15 52 18 utc",
+      "keywords": [
+        "mortgage",
+        "lending",
+        "home",
+        "finance",
+        "home-exterior"
+      ]
+    },
+    {
+      "src": "/src/assets/business-couple-leaving-suburban-house-for-commute-2024-10-19-10-26-26-utc.jpg",
+      "basename": "business-couple-leaving-suburban-house-for-commute-2024-10-19-10-26-26-utc.jpg",
+      "ratioHint": "unknown",
+      "subject": "people",
+      "brightness": "medium",
+      "alt": "business couple leaving suburban house for commute 2024 10 19 10 26 26 utc – homebuyers discussing mortgages",
+      "caption": "business couple leaving suburban house for commute 2024 10 19 10 26 26 utc",
+      "keywords": [
+        "mortgage",
+        "lending",
+        "home",
+        "finance",
+        "people"
+      ]
+    },
+    {
+      "src": "/src/assets/cheerful-couple-with-keys-to-their-new-home-2025-02-10-01-38-30-utc.jpg",
+      "basename": "cheerful-couple-with-keys-to-their-new-home-2025-02-10-01-38-30-utc.jpg",
+      "ratioHint": "unknown",
+      "subject": "people",
+      "brightness": "medium",
+      "alt": "cheerful couple with keys to their new home 2025 02 10 01 38 30 utc – homebuyers discussing mortgages",
+      "caption": "cheerful couple with keys to their new home 2025 02 10 01 38 30 utc",
+      "keywords": [
+        "mortgage",
+        "lending",
+        "home",
+        "finance",
+        "people"
+      ]
+    },
+    {
+      "src": "/src/assets/couple-calculating-family-expences-2025-02-11-12-53-12-utc.jpg",
+      "basename": "couple-calculating-family-expences-2025-02-11-12-53-12-utc.jpg",
+      "ratioHint": "unknown",
+      "subject": "people",
+      "brightness": "medium",
+      "alt": "couple calculating family expences 2025 02 11 12 53 12 utc – homebuyers discussing mortgages",
+      "caption": "couple calculating family expences 2025 02 11 12 53 12 utc",
+      "keywords": [
+        "mortgage",
+        "lending",
+        "home",
+        "finance",
+        "people"
+      ]
+    },
+    {
+      "src": "/src/assets/family-portrait-and-outdoor-with-parents-and-chil-2025-04-06-06-47-16-utc.jpg",
+      "basename": "family-portrait-and-outdoor-with-parents-and-chil-2025-04-06-06-47-16-utc.jpg",
+      "ratioHint": "tall",
+      "subject": "people",
+      "brightness": "medium",
+      "alt": "family portrait and outdoor with parents and chil 2025 04 06 06 47 16 utc – homebuyers discussing mortgages",
+      "caption": "family portrait and outdoor with parents and chil 2025 04 06 06 47 16 utc",
+      "keywords": [
+        "mortgage",
+        "lending",
+        "home",
+        "finance",
+        "people"
+      ]
+    },
+    {
+      "src": "/src/assets/financial-accountant-with-mockup-house-giving-cons-2025-03-14-19-31-47-utc.jpg",
+      "basename": "financial-accountant-with-mockup-house-giving-cons-2025-03-14-19-31-47-utc.jpg",
+      "ratioHint": "unknown",
+      "subject": "home-exterior",
+      "brightness": "medium",
+      "alt": "financial accountant with mockup house giving cons 2025 03 14 19 31 47 utc – home exterior related to mortgages",
+      "caption": "financial accountant with mockup house giving cons 2025 03 14 19 31 47 utc",
+      "keywords": [
+        "mortgage",
+        "lending",
+        "home",
+        "finance",
+        "home-exterior"
+      ]
+    },
+    {
+      "src": "/src/assets/in-a-contemporary-office-a-group-of-senior-execut-2025-04-30-22-30-41-utc.jpg",
+      "basename": "in-a-contemporary-office-a-group-of-senior-execut-2025-04-30-22-30-41-utc.jpg",
+      "ratioHint": "unknown",
+      "subject": "office",
+      "brightness": "medium",
+      "alt": "in a contemporary office a group of senior execut 2025 04 30 22 30 41 utc – mortgage office",
+      "caption": "in a contemporary office a group of senior execut 2025 04 30 22 30 41 utc",
+      "keywords": [
+        "mortgage",
+        "lending",
+        "home",
+        "finance",
+        "office"
+      ]
+    },
+    {
+      "src": "/src/assets/logo.png",
+      "basename": "logo.png",
+      "ratioHint": "unknown",
+      "subject": "logo",
+      "brightness": "medium",
+      "alt": "logo – mortgage context",
+      "caption": "logo",
+      "keywords": [
+        "mortgage",
+        "lending",
+        "home",
+        "finance",
+        "logo"
+      ]
+    },
+    {
+      "src": "/src/assets/planning-the-day-2025-01-29-08-23-03-utc.jpg",
+      "basename": "planning-the-day-2025-01-29-08-23-03-utc.jpg",
+      "ratioHint": "unknown",
+      "subject": "document",
+      "brightness": "bright",
+      "alt": "planning the day 2025 01 29 08 23 03 utc – mortgage document review",
+      "caption": "planning the day 2025 01 29 08 23 03 utc",
+      "keywords": [
+        "mortgage",
+        "lending",
+        "home",
+        "finance",
+        "document"
+      ]
+    },
+    {
+      "src": "/src/assets/soldier-consults-top-secret-documents-2025-01-29-03-10-32-utc.jpg",
+      "basename": "soldier-consults-top-secret-documents-2025-01-29-03-10-32-utc.jpg",
+      "ratioHint": "unknown",
+      "subject": "document",
+      "brightness": "medium",
+      "alt": "soldier consults top secret documents 2025 01 29 03 10 32 utc – mortgage document review",
+      "caption": "soldier consults top secret documents 2025 01 29 03 10 32 utc",
+      "keywords": [
+        "mortgage",
+        "lending",
+        "home",
+        "finance",
+        "document"
+      ]
+    },
+    {
+      "src": "/src/assets/summer-trip-around-vienna-austria-2025-01-16-11-21-00-utc.jpg",
+      "basename": "summer-trip-around-vienna-austria-2025-01-16-11-21-00-utc.jpg",
+      "ratioHint": "unknown",
+      "subject": "other",
+      "brightness": "medium",
+      "alt": "summer trip around vienna austria 2025 01 16 11 21 00 utc – mortgage context",
+      "caption": "summer trip around vienna austria 2025 01 16 11 21 00 utc",
+      "keywords": [
+        "mortgage",
+        "lending",
+        "home",
+        "finance",
+        "other"
+      ]
+    },
+    {
+      "src": "/src/assets/vertical-young-african-american-couple-looking-at-2025-02-12-03-15-34-utc.jpg",
+      "basename": "vertical-young-african-american-couple-looking-at-2025-02-12-03-15-34-utc.jpg",
+      "ratioHint": "unknown",
+      "subject": "people",
+      "brightness": "medium",
+      "alt": "vertical young african american couple looking at 2025 02 12 03 15 34 utc – homebuyers discussing mortgages",
+      "caption": "vertical young african american couple looking at 2025 02 12 03 15 34 utc",
+      "keywords": [
+        "mortgage",
+        "lending",
+        "home",
+        "finance",
+        "people"
+      ]
+    }
+  ],
+  "hero": "/src/assets/aerial-view-of-classical-american-home-in-south-ca-2024-12-06-15-52-18-utc.jpg",
+  "gallery": [
+    "/src/assets/a-real-estate-agent-and-client-are-discussing-prop-2025-10-08-12-40-17-utc.jpg",
+    "/src/assets/aerial-view-of-classical-american-home-in-south-ca-2024-12-06-15-52-18-utc.jpg",
+    "/src/assets/business-couple-leaving-suburban-house-for-commute-2024-10-19-10-26-26-utc.jpg",
+    "/src/assets/cheerful-couple-with-keys-to-their-new-home-2025-02-10-01-38-30-utc.jpg",
+    "/src/assets/couple-calculating-family-expences-2025-02-11-12-53-12-utc.jpg",
+    "/src/assets/family-portrait-and-outdoor-with-parents-and-chil-2025-04-06-06-47-16-utc.jpg",
+    "/src/assets/financial-accountant-with-mockup-house-giving-cons-2025-03-14-19-31-47-utc.jpg",
+    "/src/assets/in-a-contemporary-office-a-group-of-senior-execut-2025-04-30-22-30-41-utc.jpg",
+    "/src/assets/planning-the-day-2025-01-29-08-23-03-utc.jpg",
+    "/src/assets/soldier-consults-top-secret-documents-2025-01-29-03-10-32-utc.jpg",
+    "/src/assets/summer-trip-around-vienna-austria-2025-01-16-11-21-00-utc.jpg",
+    "/src/assets/vertical-young-african-american-couple-looking-at-2025-02-12-03-15-34-utc.jpg"
+  ],
+  "testimonials": [
+    "/src/assets/a-real-estate-agent-and-client-are-discussing-prop-2025-10-08-12-40-17-utc.jpg",
+    "/src/assets/business-couple-leaving-suburban-house-for-commute-2024-10-19-10-26-26-utc.jpg",
+    "/src/assets/cheerful-couple-with-keys-to-their-new-home-2025-02-10-01-38-30-utc.jpg",
+    "/src/assets/couple-calculating-family-expences-2025-02-11-12-53-12-utc.jpg"
+  ],
+  "programArt": {
+    "residential": "/src/assets/aerial-view-of-classical-american-home-in-south-ca-2024-12-06-15-52-18-utc.jpg",
+    "commercial": "/src/assets/in-a-contemporary-office-a-group-of-senior-execut-2025-04-30-22-30-41-utc.jpg",
+    "portfolio": "/src/assets/planning-the-day-2025-01-29-08-23-03-utc.jpg"
+  },
+  "notes": [
+    "Filename heuristics only; adjust as needed. No binaries added."
+  ]
+}

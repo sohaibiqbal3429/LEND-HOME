@@ -1,0 +1,107 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  ADMIN
+  ADVISOR
+}
+
+enum LeadStatus {
+  NEW
+  QUALIFIED
+  DOCS
+  UNDERWRITING
+  OFFER
+  COMPLETED
+  LOST
+}
+
+enum AppStage {
+  DRAFT
+  SUBMITTED
+  REVIEW
+  KYC
+  UNDERWRITING
+  APPROVED
+  DECLINED
+}
+
+model User {
+  id           String          @id @default(cuid())
+  name         String?
+  email        String          @unique
+  phone        String?
+  role         Role            @default(USER)
+  leads        Lead[]
+  applications Application[]
+  savedCalcs   CalcScenario[]
+  createdAt    DateTime        @default(now())
+  updatedAt    DateTime        @updatedAt
+}
+
+model Lead {
+  id            String     @id @default(cuid())
+  userId        String?
+  user          User?      @relation(fields: [userId], references: [id])
+  status        LeadStatus @default(NEW)
+  source        String     @default("website")
+  notes         String?
+  email         String
+  phone         String?
+  propertyPrice Decimal    @db.Decimal(12, 2)
+  deposit       Decimal    @db.Decimal(12, 2)
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+}
+
+model RateProduct {
+  id        String   @id @default(cuid())
+  lender    String
+  type      String
+  termYears Int
+  rateAPR   Decimal  @db.Decimal(5, 3)
+  fee       Decimal  @db.Decimal(10, 2)
+  ltvMax    Int
+  isActive  Boolean  @default(true)
+  updatedAt DateTime @updatedAt
+}
+
+model Application {
+  id          String    @id @default(cuid())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id])
+  leadId      String?
+  lead        Lead?     @relation(fields: [leadId], references: [id])
+  stage       AppStage  @default(DRAFT)
+  payload     Json
+  documents   File[]
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+}
+
+model File {
+  id        String   @id @default(cuid())
+  appId     String?
+  application Application? @relation(fields: [appId], references: [id])
+  url       String
+  mime      String
+  size      Int
+  checksum  String?
+  createdAt DateTime @default(now())
+}
+
+model CalcScenario {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User    @relation(fields: [userId], references: [id])
+  inputs    Json
+  outputs   Json
+  createdAt DateTime @default(now())
+}

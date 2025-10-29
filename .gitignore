@@ -1,0 +1,13 @@
+/node_modules
+/.next
+.env
+pnpm-lock.yaml
+yarn.lock
+package-lock.json
+/playwright-report
+/test-results
+public/media/**
+!.keep
+reports/**
+*.lighthouse.json
+!reports/lighthouse.md
