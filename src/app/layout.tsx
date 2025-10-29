@@ -8,8 +8,20 @@ import { Footer } from "@/components/features/footer";
 import ScrollProgress from "@/components/ScrollProgress";
 import { altFor, pickHero, resolveStatic } from "@/lib/media";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
-const playfair = Playfair_Display({ subsets: ["latin"], variable: "--font-playfair" });
+const inter = Inter({
+  subsets: ["latin"],
+  display: "swap",
+  weight: ["400", "500", "600"],
+  variable: "--font-inter",
+  adjustFontFallback: true
+});
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  display: "swap",
+  weight: ["500", "600"],
+  variable: "--font-playfair",
+  adjustFontFallback: true
+});
 
 const heroSrc = pickHero();
 const heroAsset = resolveStatic(heroSrc);

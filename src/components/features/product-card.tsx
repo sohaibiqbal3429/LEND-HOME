@@ -1,10 +1,12 @@
 "use client";
 
-import { motion, useReducedMotion } from "framer-motion";
 import Image from "next/image";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { altFor, pickProgramArt, resolveStatic } from "@/lib/media";
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
+import { useInViewOnce } from "@/hooks/useInViewOnce";
+import { cn } from "@/lib/utils";
 
 interface ProductCardProps {
   title: string;
@@ -14,23 +16,24 @@ interface ProductCardProps {
   mediaKey?: string;
 }
 
-const spring = { type: "spring", stiffness: 260, damping: 24 } as const;
-
 export function ProductCard({ title, description, href, tag, mediaKey }: ProductCardProps) {
-  const reduceMotion = useReducedMotion();
+  const reduceMotion = usePrefersReducedMotion();
+  const { ref, isVisible } = useInViewOnce<HTMLElement>({ rootMargin: "-10% 0px" });
+
   const artSrc = mediaKey ? pickProgramArt(mediaKey) : null;
   const art = resolveStatic(artSrc ?? null);
   const alt = artSrc ? altFor(artSrc) : `${title} illustration`;
 
   return (
-    <motion.article
-      initial={reduceMotion ? undefined : { opacity: 0, y: 16 }}
-      whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
-      viewport={{ once: true, amount: 0.4 }}
-      whileHover={reduceMotion ? undefined : { y: -6 }}
-      transition={{ ...spring, duration: 0.2 }}
-      className="glass group relative flex h-full flex-col justify-between overflow-hidden rounded-3xl p-6"
+    <article
+      ref={ref}
+      className={cn(
+        "glass hover-lift group relative flex h-full flex-col justify-between overflow-hidden rounded-3xl p-6 transition-all",
+        !reduceMotion && !isVisible && "translate-y-6 opacity-0",
+        !reduceMotion && isVisible && "translate-y-0 opacity-100"
+      )}
     >
+      {/* CSS transitions keep the reveal lightweight now that framer-motion is gone. */}
       {art ? (
         <div className="absolute inset-0 opacity-20 transition-opacity duration-200 group-hover:opacity-30">
           <Image
@@ -54,6 +57,6 @@ export function ProductCard({ title, description, href, tag, mediaKey }: Product
       >
         Explore <ArrowRight className="h-4 w-4 transition-transform duration-200 motion-safe:group-hover:translate-x-1" />
       </Link>
-    </motion.article>
+    </article>
   );
 }

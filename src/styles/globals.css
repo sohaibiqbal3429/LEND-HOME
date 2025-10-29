@@ -2,22 +2,80 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  color-scheme: light;
+@import "./design-tokens.css";
+
+@layer base {
+  :root {
+    color-scheme: light;
+  }
+
+  body {
+    /* Re-apply the original palette but via tokens so the theme can be cached efficiently. */
+    @apply font-sans antialiased text-slate-900;
+    background-color: rgb(var(--color-mint-100));
+  }
+
+  a {
+    @apply text-primary underline-offset-4 transition-colors duration-200 hover:text-primary/80 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/40;
+  }
+
+  .glass {
+    /* Uses translucent token values to guarantee consistent blur on every surface. */
+    @apply border border-white/40 bg-white/70 backdrop-blur-xl shadow-soft;
+  }
+
+  [data-nextjs-scroll-focus-boundary] {
+    display: contents;
+  }
 }
 
-body {
-  @apply bg-mint text-slate-900 font-sans antialiased;
+@layer utilities {
+  .page-transition-enter {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  .page-transition-active {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity var(--transition-smooth), transform var(--transition-smooth);
+  }
+
+  .hover-lift {
+    transition: transform var(--transition-snappy), box-shadow var(--transition-snappy);
+  }
+
+  .hover-lift:hover,
+  .hover-lift:focus-visible {
+    transform: translateY(-4px);
+  }
+
+  .scroll-progress-bar {
+    background-image: linear-gradient(90deg, rgba(167, 243, 208, 0.95), rgba(11, 28, 23, 0.9));
+  }
+
+  @keyframes gentle-rotate {
+    0% {
+      transform: rotate(0deg);
+    }
+    40% {
+      transform: rotate(5deg);
+    }
+    70% {
+      transform: rotate(-5deg);
+    }
+    100% {
+      transform: rotate(0deg);
+    }
+  }
+
+  .animate-gentle-rotate {
+    animation: gentle-rotate 16s ease-in-out infinite;
+  }
 }
 
-a {
-  @apply text-primary underline-offset-4 transition hover:text-primary/80;
-}
-
-.glass {
-  @apply bg-white/70 dark:bg-charcoal/60 backdrop-blur-xl border border-white/40 shadow-soft;
-}
-
-[data-nextjs-scroll-focus-boundary] {
-  display: contents;
+@media (prefers-reduced-motion: reduce) {
+  .animate-gentle-rotate {
+    animation: none;
+  }
 }

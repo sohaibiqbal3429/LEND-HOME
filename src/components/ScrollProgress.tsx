@@ -27,32 +27,12 @@ export default function ScrollProgress() {
   return (
     <>
       <div
-        style={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          height: 3,
-          width: `${pct}%`,
-          background: "linear-gradient(90deg,#a7f3d0,#111827)",
-          zIndex: 60,
-          transition: "width 120ms cubic-bezier(0.22,1,0.36,1)",
-        }}
+        className="scroll-progress-bar fixed left-0 top-0 z-[60] h-1 transition-[width] duration-150 ease-snappy"
+        style={{ width: `${pct}%` }}
         aria-hidden
       />
       <div
-        style={{
-          position: "fixed",
-          right: 12,
-          bottom: 12,
-          zIndex: 60,
-          background: "rgba(17,24,39,.85)",
-          color: "#fff",
-          borderRadius: 12,
-          padding: "6px 10px",
-          fontSize: 12,
-          backdropFilter: "saturate(180%) blur(10px)",
-          border: "1px solid rgba(255,255,255,.08)",
-        }}
+        className="fixed bottom-3 right-3 z-[60] rounded-2xl border border-white/20 bg-charcoal/80 px-3 py-2 text-xs font-semibold text-white shadow-soft backdrop-blur"
         aria-label={`Scroll progress ${pct}%`}
       >
         {pct}%

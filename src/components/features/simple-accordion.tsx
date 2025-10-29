@@ -1,7 +1,8 @@
 "use client";
 
 import * as React from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { cn } from "@/lib/utils";
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 
 interface AccordionItem {
   question: string;
@@ -14,6 +15,7 @@ interface AccordionProps {
 
 export function Accordion({ items }: AccordionProps) {
   const [openIndex, setOpenIndex] = React.useState<number | null>(0);
+  const reduceMotion = usePrefersReducedMotion();
 
   return (
     <div className="mt-6 divide-y divide-slate-200 rounded-3xl border border-slate-200 bg-white">
@@ -22,30 +24,28 @@ export function Accordion({ items }: AccordionProps) {
         return (
           <div key={item.question}>
             <button
-              className="flex w-full items-center justify-between gap-4 px-6 py-4 text-left"
+              className="flex w-full items-center justify-between gap-4 px-6 py-4 text-left transition-colors duration-200 hover:text-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary/40"
               onClick={() => setOpenIndex(isOpen ? null : index)}
               aria-expanded={isOpen}
             >
               <span className="text-base font-medium text-charcoal">{item.question}</span>
-              <span className="text-2xl text-primary">{isOpen ? "−" : "+"}</span>
+              <span className="text-2xl text-primary" aria-hidden>
+                {isOpen ? "−" : "+"}
+              </span>
             </button>
-            <AnimatePresence initial={false}>
-              {isOpen ? (
-                <motion.div
-                  key="content"
-                  initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: "auto", opacity: 1 }}
-                  exit={{ height: 0, opacity: 0 }}
-                  transition={{ type: "spring", stiffness: 260, damping: 24 }}
-                >
-                  <div className="px-6 pb-6 text-sm text-slate-600">{item.answer}</div>
-                </motion.div>
-              ) : null}
-            </AnimatePresence>
+            <div
+              className={cn(
+                "grid overflow-hidden px-6 transition-all ease-snappy",
+                isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"
+              )}
+              style={reduceMotion ? { transitionDuration: "1ms" } : undefined}
+            >
+              {/* Grid rows mimic the auto height animation without JS heavy lifting. */}
+              <div className="min-h-0 pb-6 text-sm text-slate-600">{item.answer}</div>
+            </div>
           </div>
         );
       })}
     </div>
   );
 }
-

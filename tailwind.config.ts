@@ -17,20 +17,35 @@ const config: Config = {
     },
     extend: {
       colors: {
-        primary: "#004D40",
-        accent: "#FFD166",
-        mint: "#E8F5E9",
-        charcoal: "#0B1C17"
+        primary: "rgb(var(--color-primary) / <alpha-value>)",
+        "primary-contrast": "rgb(var(--color-primary-contrast) / <alpha-value>)",
+        accent: "rgb(var(--color-accent) / <alpha-value>)",
+        "accent-contrast": "rgb(var(--color-accent-contrast) / <alpha-value>)",
+        mint: "rgb(var(--color-mint-100) / <alpha-value>)",
+        "mint-soft": "rgb(var(--color-mint-200) / <alpha-value>)",
+        charcoal: "rgb(var(--color-charcoal) / <alpha-value>)",
+        slate: {
+          700: "rgb(var(--color-slate-700) / <alpha-value>)",
+          900: "rgb(var(--color-slate-900) / <alpha-value>)"
+        }
       },
       fontFamily: {
         sans: ["var(--font-inter)", ...fontFamily.sans],
         display: ["var(--font-playfair)", ...fontFamily.serif]
       },
       borderRadius: {
-        "2xl": "1.5rem"
+        "2xl": "var(--radius-lg)",
+        "3xl": "var(--radius-xl)"
       },
       boxShadow: {
-        soft: "0 20px 50px -25px rgba(11, 28, 23, 0.45)"
+        soft: "var(--shadow-soft)",
+        focus: "var(--shadow-focus)"
+      },
+      transitionTimingFunction: {
+        snappy: "cubic-bezier(0.22,1,0.36,1)"
+      },
+      transitionDuration: {
+        snappy: "180ms"
       }
     }
   },
