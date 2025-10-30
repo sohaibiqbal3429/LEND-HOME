@@ -42,7 +42,7 @@ const quickNavItems = [
 
 export default function HomePage() {
   return (
-    <div className="container space-y-20 py-16">
+    <div className="container space-y-20 pt-0 pb-16">
       <QuickNav items={quickNavItems} />
       <section id="overview" className="space-y-8">
         <Hero />
